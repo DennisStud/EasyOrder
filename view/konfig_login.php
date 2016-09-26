@@ -16,7 +16,7 @@ php?>
 
 
 <div class="container">
-    <h1>Anmelden an StudiDuell</h1>
+    <h1>Anmelden an EasyOrder</h1>
     <form action="index.php?action=do_login" method="post" id="form_login">
         
         <!--Input Feld für den Benutzernamen.-->
@@ -31,4 +31,4 @@ php?>
         <button type="submit" class="btn btn-default">Anmelden</button>
     </form>
 </div>
-}
+
