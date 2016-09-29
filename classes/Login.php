@@ -54,10 +54,10 @@ class Login {
         }
         //Login erfolgreich
         $row = $stmt->fetch();
-        $dozentId = $row[0];
+        $tisch_id = $row[0];
         //Sessionwerte setzen
         $_SESSION['login_auth'] = TRUE;
-        $_SESSION['login_tischid'] = $tischID;
+        $_SESSION['login_tischid'] = $tisch_id;
         return true;
     }
 }

@@ -7,4 +7,6 @@ class Utility{
         header('Location: '.$url);
         echo "<a href=\"$url\">Weiter</a>";
     }
+    
+    
 }

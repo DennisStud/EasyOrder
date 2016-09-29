@@ -26,3 +26,5 @@ class DB {
         self::$dbh = new PDO("mysql:host=".self::$dbHost.";dbname=".self::$dbName, self::$dbUser, self::$dbPass);
 }
 }
+
+
