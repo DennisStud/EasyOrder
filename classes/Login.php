@@ -9,7 +9,7 @@
  * login_dozentid: DozentId wenn eingeloggt
  */
 class Login {
-    
+
     //liefert Wahrheitswert ob der Benutzer der Webseite eingeloggt ist
     public static function isLoggedIn() {
         if (isset($_SESSION['login_auth'])) {
@@ -18,7 +18,7 @@ class Login {
             return FALSE;
         }
     }
-    
+
     //liefert den eingeloggten Dozenten, wenn nicht eingeloggt, dann werfe LoginException
     public static function getTischId() {
         if (self::isLoggedIn() == FALSE) {
@@ -26,13 +26,13 @@ class Login {
         }
         return $_SESSION['login_dozentid'];
     }
-    
+
     //führt Logout durch
     public static function logout() {
         $_SESSION['login_auth'] = false;
         $_SESSION['login_dozentid'] = 0;
     }
-    
+
     //versucht den Login mit unverschlüsseltem übergebenem Benutzernamen und Passwort. Liefert Wahrheitswert zurück, ob erfolgreich. Wenn erfolgreich, dann setzt die Methode alle benötigten Variablen
     public static function versucheLogin($username, $passwort) {
         //Leere eingaben abfangen
@@ -41,9 +41,9 @@ class Login {
         }
         //Passwort verschlüsseln
         $passHash = md5($passwort);
-        
+
         //Versuche die DozentId mit username und Passwort zu laden, wenn erfolgreich -> login möglichstmt
-        $stmt = DB::$dbh->prepare("SELECT tischid FROM Tisch WHERE tischid=:username AND passwort=:passhash");
+        $stmt = DB::$dbh->prepare("SELECT tisch_id FROM tisch WHERE tisch_id=:username AND passwort=:passhash");
         $stmt->bindValue(":username", $username);
         $stmt->bindValue(":passhash", $passHash);
         $stmt->execute();
@@ -60,4 +60,5 @@ class Login {
         $_SESSION['login_tischid'] = $tisch_id;
         return true;
     }
+
 }

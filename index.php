@@ -1,3 +1,9 @@
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
 <?php
 
 //Beginn der Session
@@ -8,13 +14,7 @@ require_once 'classes/DB.php';
 require_once 'classes/Login.php';
 require_once 'classes/Utility.php';
 require_once 'classes/Benachrichtigung.php';
-
-//Exceptionhandler, gibt Meldungen aus
-function exception_handler($exception) {
-    echo "Nicht aufgefangene Exception: ", $exception->getMessage(), "\n";
-}
-
-set_exception_handler('exception_handler');
+require_once 'classes/Kategorie.php';
 
 //Datenbankzugriff initialisieren
 DB::init();
@@ -40,7 +40,7 @@ switch ($action) {
 
         echo $username, $passwort;
 
-        //Wenn erfolgreich, weiterleiten zur Spieleübersicht
+        //Wenn erfolgreich, weiterleiten zur Startseite
         if (Login::versucheLogin($username, $passwort)) {
             Utility::redirect("index.php?action=start");
         }
@@ -48,64 +48,68 @@ switch ($action) {
         //Bei fehlerhafter Anmeldung Aufruf der Login-Seite mit Hinweis auf gescheiterten Versuch
         else {
             Benachrichtigung::addBenachrichtigung("Die Anmeldung war nicht erfolgreich, Benutzername oder Passwort sind fehlerhaft.", "danger");
-            Utility::redirect("index.php?action=start");
+            Utility::redirect("index.php?action=home");
             //Da der Login nicht funktioniert, wird auch bei falschem Passwort weitergeleitet
         }
-
-
-    case "start":
-        if (Login::isLoggedIn()) {
-            Utility::redirect("index.php?action=gast_willkommen");
-            break;
-        }
-        include "view/gast_ willkommen.php";
-        break;
-
-    case "meal":
-        if (Login::isLoggedIn()) {
-            Utility::redirect("index.php?action=gast_speisekarte");
-            break;
-        }
-        include "view/gast_speisekarte.php";
-        break;
         
-    case "drinks":
-        if (Login::isLoggedIn()) {
-            Utility::redirect("index.php?action=gast_Getränkekarte");
-            break;
+    case "start":{
+        if (!Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=home");
+                break;
         }
-        include "view/gast_Getraenkekarte.php";
+        include 'view/startpage.php';
         break;
-
-    case "invoice":
-        if (Login::isLoggedIn()) {
-            Utility::redirect("index.php?action=gast_rechnung");
-            break;
-        }
-        include "view/gast_rechnung.php";
-        break;
+    }
         
-    case "about":
-        if (Login::isLoggedIn()) {
-            Utility::redirect("index.php?action=über_uns");
-            break;
+    case "meals":{
+        if (!Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=home");
+                break;
         }
-        include "view/gast_ueberuns.php";
-        break;
+        include 'view/speisekarte.php';
+        break;       
+    }
+       
+        case "drinks":{
+        if (!Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=home");
+                break;
+        }
+        include 'view/getraenkekarte.php';
+        break;       
+    }
+    
+    case "invoice":{
+        if (!Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=home");
+                break;
+        }
+        include 'view/rechnung.php';
+        break;       
+    }
 
-
-
-    //Login-View als Startseite
+    case "about":{
+        if (!Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=home");
+                break;
+        }
+        include 'view/ueberuns.php';
+        break; 
+    }
+        
+        
+         //Login-View als Startseite
     default:
-    case "home":
+    case "home": {
 
-        //Weiterleitung auf Spieleübersicht, wenn man bereits eingeloggt ist
-        if (Login::isLoggedIn()) {
-            Utility::redirect("index.php?action=gast_willkommen");
+            //Weiterleitung auf Spieleübersicht, wenn man bereits eingeloggt ist
+            if (Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=start");
+                break;
+            }
+            include "view/login.php";
             break;
         }
-        include "view/konfig_login.php";
-        break;
 }
 
 //Ende der Session
