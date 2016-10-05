@@ -1,23 +1,51 @@
-.startpage{
-    
-    
-    
-    
-    
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 05.10.2016, 14:26:03
+    Author     : T420
+*/
+
+table, th, td{
+    border: none;
+    background-color: #d2b48c;
+    max-width: 50%;
+
+}
+
+th{
+    font-size: 24px;    
+}
+
+td{
+    font-size: 18px;
+
+
+}
+
+body{
+    background-image: url(img/holz.jpg);
+    background-color: #ccc;
+    opacity: 0.9;
+
+}
+
+#form_start{
+    position: fixed;
+    bottom: 100px;
+    text-align: center;   
+}
+
+#form_order{
+    size: 50px;
+
+}
+
+#input_anzahl{
+    max-width: 70px
+
 }
 
 
-.row{
- 
-    
-    
-    
-    
-    
-    
-}
-
-body {
-        background-image: url(img/holz.JPG);
-          
-}

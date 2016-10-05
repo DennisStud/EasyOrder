@@ -2,8 +2,9 @@
 
 /**
  * Description of Benachrichtigung
- * Klasse zum Nutzen von Benachrichtigungen, die einmalig angezeigt werden. Typischerweise nach dem Absenden eines Formulars, Käufen und anderen Tätigkeiten als Bestätigung
- * @author Michael
+ * Klasse zum Nutzen von Benachrichtigungen, die einmalig angezeigt werden. 
+ * Typischerweise nach dem Absenden eines Formulars.
+ * @author Dennis
  */
 class Benachrichtigung {
 

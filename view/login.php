@@ -1,13 +1,11 @@
-<?php
+<!--Login-Screen-->
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+<?php
+if (Benachrichtigung::hasBenachrichtigungen()) 
+    {echo Benachrichtigung::getBenachrichtigung();}
 ?>
 
-<div class="container">
+<div style="text-align: center">
     <h1>Anmelden an EasyOrder</h1>
     <form action="index.php?action=do_login" method="post" id="form_login">
 
@@ -18,6 +16,11 @@
         <!--Input Feld für das Passwort.-->
         <label for="input_passwort">Passwort:</label>     
         <input type="password" class="form-control" id="input_passwort" name="input_passwort" placeholder="Passwort" aria-describedby="input_passwort">
+
+        <select name="dropdown_user" id="dropdown_user">
+            <option>Gast</option>
+            <option>Admin</option>
+        </select>
 
         <!--Button zum anmelden. Gibt den eingegebenen Benutzernamen und das eingegebene Passwort an den Controller weiter.-->
         <button type="submit" class="btn btn-default">Anmelden</button>

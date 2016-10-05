@@ -1,11 +1,4 @@
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-
 <?php
-
 //Beginn der Session
 session_start();
 
@@ -15,11 +8,13 @@ require_once 'classes/Login.php';
 require_once 'classes/Utility.php';
 require_once 'classes/Benachrichtigung.php';
 require_once 'classes/Kategorie.php';
+require_once 'classes/Speisen.php';
+require_once 'classes/Bestellung.php';
 
 //Datenbankzugriff initialisieren
 DB::init();
 
-//Wenn kein Wert für den Parameter action angegeben ist , wird auf die Login-Seite geleitet
+//Wenn kein Wert für den Parameter action angegeben ist, wird auf die Login-Seite geleitet
 if (isset($_GET['action'])) {
     $action = $_GET['action'];
 } else {
@@ -37,68 +32,127 @@ switch ($action) {
         //Eingaben aus dem Formular laden
         $username = $_POST['input_benutzername'];
         $passwort = $_POST['input_passwort'];
+        $rolle = $_POST['dropdown_user'];
 
-        echo $username, $passwort;
-
-        //Wenn erfolgreich, weiterleiten zur Startseite
-        if (Login::versucheLogin($username, $passwort)) {
+        //Wenn Login erfolgreich, weiterleiten zur Startseite
+        if (Login::versucheLogin($username, $passwort, $rolle)) {
             Utility::redirect("index.php?action=start");
         }
 
-        //Bei fehlerhafter Anmeldung Aufruf der Login-Seite mit Hinweis auf gescheiterten Versuch
+        //Bei fehlerhafter Anmeldung, Aufruf der Login-Seite mit Hinweis auf gescheiterten Versuch
         else {
             Benachrichtigung::addBenachrichtigung("Die Anmeldung war nicht erfolgreich, Benutzername oder Passwort sind fehlerhaft.", "danger");
             Utility::redirect("index.php?action=home");
-            //Da der Login nicht funktioniert, wird auch bei falschem Passwort weitergeleitet
         }
-        
-    case "start":{
-        if (!Login::isLoggedIn()) {
-                Utility::redirect("index.php?action=home");
-                break;
-        }
-        include 'view/startpage.php';
-        break;
-    }
-        
-    case "meals":{
-        if (!Login::isLoggedIn()) {
-                Utility::redirect("index.php?action=home");
-                break;
-        }
-        include 'view/speisekarte.php';
-        break;       
-    }
-       
-        case "drinks":{
-        if (!Login::isLoggedIn()) {
-                Utility::redirect("index.php?action=home");
-                break;
-        }
-        include 'view/getraenkekarte.php';
-        break;       
-    }
-    
-    case "invoice":{
-        if (!Login::isLoggedIn()) {
-                Utility::redirect("index.php?action=home");
-                break;
-        }
-        include 'view/rechnung.php';
-        break;       
-    }
 
-    case "about":{
-        if (!Login::isLoggedIn()) {
+    // Startseite mit Begrüßung des Gastes und Übersicht über die Funktionen
+    case "start": {
+            //Weiterleitung zur Startseite, falls nicht eingeloggt
+            if (!Login::isLoggedIn()) {
                 Utility::redirect("index.php?action=home");
                 break;
+            }
+            include 'view/startpage.php';
+            break;
         }
-        include 'view/ueberuns.php';
-        break; 
-    }
-        
-        
-         //Login-View als Startseite
+
+    // Seite mit Übersicht über die Kategorien der Speisekarte
+    case "meals": {
+            //Weiterleitung zur Startseite, falls nicht eingeloggt
+            if (!Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=home");
+                break;
+            }
+            //Aufruf der ausgewählten Kategorie
+            if (isset($_GET['aktuellkategorieid'])) {
+                $aktuellkategorieid = $_GET['aktuellkategorieid'];
+            } else {
+                $aktuellkategorieid = '1';
+            }
+            include 'view/speisekarte.php';
+            break;
+        }
+
+    //Entgegennehmen der Bestellung und Weiterleiten zur Bestellübersicht
+    case "order": {
+            //Weiterleitung zur Startseite, falls nicht eingeloggt
+            if (!Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=home");
+                break;
+            }
+            //Lade Bestellung
+            foreach ($_POST as $inputName => $value) { //dazu alle übergebenen Werte nacheinander prüfen
+                if (strpos($inputName, "input_anzahl") !== FALSE) {
+                    $gerichtid = substr($inputName, 12); //id aus dem inputNamen ziehen
+                    $anzahl = $value;
+                    Bestellung::setBestellung(Login::getTischId(), $gerichtid, $anzahl);
+                }
+            }
+            include 'view/bestelluebersicht.php';
+            break;
+        }
+    //Seite mit einer Übersicht über alle getätigten Bestellungen
+    case "overview": {
+            //Weiterleitung zur Startseite, falls nicht eingeloggt
+            if (!Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=home");
+                break;
+            }
+            include 'view/bestelluebersicht.php';
+            break;
+        }
+
+    //Seite Beschreibung der Gaststätte
+    case "about": {
+            //Weiterleitung zur Startseite, falls nicht eingeloggt
+            if (!Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=home");
+                break;
+            }
+            include 'view/ueberuns.php';
+            break;
+        }
+
+    //Konfigurationsseite zum Verwalten der Speisekarte
+    case "konfig": {
+            //Weiterleitung zur Startseite, falls nicht eingeloggt
+            if (!Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=home");
+                break;
+            }
+
+            include 'view/konfig.php';
+            break;
+        }
+
+    //Erstellen einer neuen Kateforie
+    case "kategorie_erstellen": {
+            //Weiterleitung zur Startseite, falls nicht eingeloggt
+            if (!Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=home");
+                break;
+            }
+            if (!$_GET['input_setkategorie'] == NULL) {
+                $setkategorie = $_POST['input_setkategorie'];
+                Kategorie::setKategorie($setkategorie);
+            }
+        }
+    //Erstellen eines neuen Gerichts
+    case "gericht_erstellen": {
+
+
+            if (!$_POST['input_settitel'] == NULL && !$_POST['input_seteinzelpreis'] == NULL && !$_POST['input_setbeschreibung'] == NULL) {
+                $setkategorieid = Kategorie::getKategorieID($_POST['dropdown_kategorie']);
+                $settitel = $_POST['input_settitel'];
+                $seteinzelpreis = $_POST['input_seteinzelpreis'];
+                $setbeschreibung = $_POST['input_setbeschreibung'];
+                Speisen::setGericht($setkategorieid, $settitel, $seteinzelpreis, $setbeschreibung);
+            }
+
+            include 'view/konfig.php';
+            break;
+        }
+    //Login-View als Startseite
     default:
     case "home": {
 

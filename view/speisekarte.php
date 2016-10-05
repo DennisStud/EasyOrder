@@ -1,74 +1,50 @@
+<!--Seite mit Darstellung der Speisekarte-->
 <?php
 require 'templates/headblockview.php';
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+require 'templates/sidebar_left.php';
 ?>
-<body style="background-image: url(img/holz.jpg)">
-    <div class="row">
-        <div class="col-md-3">
-            <div class="sidebar-nav-fixed affix">
-                <div class="well">
-                    <ul class="nav ">
-                        <li class="nav-header">Sidebar</li>
-                        <?php
-                        $kategorie = Kategorie::getAllKategorien();
-                        $anzahlkat = count($kategorie) - 1;
 
+<body>
+    <div class="container">
+        <?php $kat = Kategorie::getKategorie($aktuellkategorieid); ?>
+        <p><h1><?php echo $kat[0]; ?></h1></p>
 
-                        for ($x = 0; $x <= $anzahlkat; $x++) {
-                            ?>
+    <!--Dies ist die Speisekarte-->
+    <table class="table">
+        <thead>
+            <tr> 
+                <th>Gericht</th>
+                <th>Beschreibung</th>
+                <th>Preis</th>
+                <th>Anzahl</th>
+            </tr>
+        </thead>
 
-                            <li><a href="index.php?action=meals&aktuellkategorieid=<?php echo $x ?>"><?php echo $kategorie[$x] ?></a></li></tr>  
-                        <?php } ?>
-                    </ul>
-                </div>
-                <!--/.well -->
-            </div>
-            <!--/sidebar-nav-fixed -->
-        </div>
-        <!--    <div class="row">-->
-        <div class="col-md-9">
+        <tbody>
             <?php
-            ?>
+            $speisen = Speisen::getSpeisen($aktuellkategorieid);
 
-            <table class="table">
-                <thead>
-                    <tr> 
-                        <th>lfd.Nr</th>
-                        <th>Gericht</th>
-                        <th>Beschreibung</th>
-                        <th>Preis</th>
-                        <th>Anzahl</th>
-                        <th>      </th>
-
-                </thead>
-                <tbody>
-                    </tr>
-                    <?php
-                    $speisen = Speisen::getSpeisen($aktuellkategorieid);
-                    $anzahlger = count($speisen) - 1;
-
-
-                    for ($x = 0; $x <= $anzahlger; $x++) {
-                        ?>
-                        <tr class="table-row">
-                            <?php for ($y = 0; $y <= 3; $y++) { ?>
-                                <td>
-                                    <?php echo $speisen[$x][$y] ?>
-                                </td>
-
-                            <?php } ?>
-                            <td><input class="number"></td>            
-                            <td><a href="index.php?action=bestellen" >bestellen</a></td>    
-                        </tr> 
+            foreach ($speisen as $Speise) {
+                ?>
+                <tr class="table-row">
+                    <?php for ($y = 1; $y <= 3; $y++) { ?>
+                        <td>
+                            <?php echo $Speise [$y] ?>
+                        </td>
                     <?php } ?>
-                </tbody>
-            </table>
-        </div>
-</body>
 
+                    <td>
+                        <!--Formular zum Aufgeben der Bestellung-->
+                        <form class="form-inline" action="index.php?action=order" method="post">
+                            <input type="number" class="form-control" id="input_anzahl<?php echo $Speise[0] ?>" name="input_anzahl<?php echo $Speise[0] ?>" placeholder="Anzahl" min="0">
+                            <button type="submit" value="bestellen">bestellen</button>
+                        </form>
+                    </td>
+                <?php } ?>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
 <?php
 require 'templates/footblockview.php';
