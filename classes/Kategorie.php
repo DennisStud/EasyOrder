@@ -10,13 +10,13 @@ class Kategorie {
     
     //Lade alle Kategorien aus der DB
     public static function getAllKategorien() {
-        $stmt = DB::$dbh->prepare("SELECT bezeichnung FROM kategorie");
+        $stmt = DB::$dbh->prepare("SELECT * FROM kategorie");
         $stmt->execute();
         
         $arraykategorie = array(); //Rückgabearray vorbereiten
         $i = 0;
         while ($row = $stmt->fetch()) {
-            $arraykategorie[$i] = $row['bezeichnung'];
+            $arraykategorie[$i] = $row;
             $i = $i + 1;
         }
         return $arraykategorie;
