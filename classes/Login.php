@@ -38,14 +38,14 @@ class Login {
 
     //versucht den Login mit unverschlüsseltem übergebenem Benutzernamen und Passwort. Liefert Wahrheitswert zurück, ob erfolgreich. Wenn erfolgreich, dann setzt die Methode alle benötigten Variablen
     public static function versucheLogin($username, $passwort, $rolle) {
-        //Leere eingaben abfangen
+        //Leere Eingaben abfangen
         if ($username == "" OR $passwort == "") {
             return FALSE;
         }
         //Passwort verschlüsseln
         $passHash = md5($passwort);
 
-        //Versuche die DozentId mit username und Passwort zu laden, wenn erfolgreich -> login möglichstmt
+        //Versuche die TischId mit username und Passwort zu laden, wenn erfolgreich -> login möglichstmt
         $stmt = DB::$dbh->prepare("SELECT username FROM user WHERE username=:username AND passwort=:passhash AND rolle=:rolle");
         $stmt->bindValue(":username", $username);
         $stmt->bindValue(":passhash", $passHash);

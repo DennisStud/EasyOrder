@@ -1,5 +1,4 @@
-
-
+<!--View mit der Präsentation der des Logoutbildschirms-->
 <body style="background-image: url(img/holz.jpg)">
     <div class='container'>
 

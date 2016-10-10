@@ -1,4 +1,4 @@
-
+<!--Navigationsleiste an der Seite-->
 <div class="col-md-3">
     <div class="sidebar-nav affix">
         <div class="well">

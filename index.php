@@ -163,7 +163,7 @@ switch ($action) {
             include 'view/konfig.php';
             break;
         }
-
+    //Kategorie löschen
     case "kategorie_löschen": {
             //Weiterleitung zur Startseite, falls nicht eingeloggt
             if (!Login::isLoggedIn()) {
@@ -183,7 +183,7 @@ switch ($action) {
         }
     //Erstellen eines neuen Gerichts
     case "gericht_erstellen": {
-
+            //Weiterleitung zur Startseite, falls nicht eingeloggt
             if (!Login::isLoggedIn()) {
                 Utility::redirect("index.php?action=home");
                 break;
@@ -203,7 +203,7 @@ switch ($action) {
         }
     //Löschen eines Gerichts  
     case "gericht_löschen": {
-
+            //Weiterleitung zur Startseite, falls nicht eingeloggt
             if (!Login::isLoggedIn()) {
                 Utility::redirect("index.php?action=home");
                 break;

@@ -34,7 +34,7 @@ class Speisen {
 
         return $gerichtid;
     }
-
+    //Laden der ID des Gerichtes
     public static function getGerichtID($GerichtID) {
 
         $stmt = DB::$dbh->prepare("SELECT gericht_id FROM gericht WHERE titel =:gerichtid");
