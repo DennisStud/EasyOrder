@@ -8,11 +8,18 @@ if (Benachrichtigung::hasBenachrichtigungen()) {
 require 'templates/sidebar_left.php';
 ?>
 
-<script>
-    function achtungBox(){
-        window.open("index.php?action=overview");
+<?php
+    if(c){
+    echo '<script typ="text/javascript">
+        function achtungBox(){
+            var c = confirm("Wollen sie bestellen?")
+            if(!c){
+                Utility::redirect("index.php?action=meals");
+            }
+        }
+    </script>';
     }
-</script>
+?>
 
 <body style="background-image: url(img/holz.jpg)">
     <div class="container"> 
