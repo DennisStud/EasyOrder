@@ -14,7 +14,7 @@ require 'templates/sidebar_left.php';
  * and open the template in the editor.
  */
 ?>
-<body>
+<body style="background-image: url(img/holz.jpg)">
     <div class="container">
         <!--Formular zum Erstellen einer neuen Kategorie-->
         <h4>Fügen Sie eine neue Kategorie hinzu!</h4>

@@ -5,7 +5,7 @@ require 'templates/headblockview.php';
 require 'templates/sidebar_left.php';
 ?>
 
-<body style="background-image: url(view/holz.jpg)">
+<body style="background-image: url(img/holz.jpg)">
     <div class="container">
         <!--Einleitender Begrüßungstext auf der Startseite-->
         <div class="row">
@@ -18,7 +18,7 @@ require 'templates/sidebar_left.php';
             <div class="col-md-6">
                 <form action="index.php?action=meals" method="post" id="form_start">
                     <div class="form-group">
-                        <img src="img/spaghetti.png" class="img-responsive" alt="Responsives Bild">
+                        <img src="img/spaghetti.png" class="img-responsive" alt="Responsives Bild" >
                         <button class="btn btn-default" type="submit">Speisen & Getränke bestellen</button>
                     </div>
                 </form>

@@ -146,14 +146,14 @@ switch ($action) {
                 break;
             }
 
-            //Erstellen einer neuen Kateforie
+            //Erstellen einer neuen Kategorie
             case "kategorie_erstellen": {
                 //Weiterleitung zur Startseite, falls nicht eingeloggt
                 if (!Login::isLoggedIn()) {
                     Utility::redirect("index.php?action=home");
                     break;
                 }
-                if (isset($_GET['input_setkategorie'])) {
+                if (isset($_POST['input_setkategorie'])) {
                     $setkategorie = $_POST['input_setkategorie'];
                     Kategorie::setKategorie($setkategorie);
                 } else {
@@ -170,7 +170,7 @@ switch ($action) {
                     break;
                 }
 
-                if (isset($_GET['input_settitel']) and isset($_GET['input_seteinzelpreis'])) {
+                if (isset($_POST['input_settitel']) and isset($_POST['input_seteinzelpreis'])) {
                     $setkategorieid = Kategorie::getKategorieID($_POST['dropdown_kategorie']);
                     $settitel = $_POST['input_settitel'];
                     $seteinzelpreis = $_POST['input_seteinzelpreis'];

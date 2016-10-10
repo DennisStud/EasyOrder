@@ -4,7 +4,7 @@ require 'templates/headblockview.php';
 require 'templates/sidebar_left.php';
 ?>
 
-<body>
+<body style="background-image: url(img/holz.jpg)">
     <div class="row">
         <div class="container">
             <p><h1>Bestellübersicht</h1></p>

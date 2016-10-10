@@ -8,7 +8,7 @@ if (Benachrichtigung::hasBenachrichtigungen()) {
 require 'templates/sidebar_left.php';
 ?>
 
-<body>
+<body style="background-image: url(img/holz.jpg)">
     <div class="container"> 
         <?php $kat = Kategorie::getKategorie($aktuellkategorieid); ?>
         <p><h1><?php echo $kat[0]; ?></h1></p>
