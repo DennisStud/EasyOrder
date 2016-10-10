@@ -70,7 +70,7 @@ switch ($action) {
                 $aktuellkategorieid = $_GET['aktuellkategorieid'];
             } else {
                     $tmp=  Kategorie::getAllKategorien();
-                    $aktuellkategorieid = var_export($tmp[0]);
+                    $aktuellkategorieid = $tmp[0][0];
             }
             include 'view/speisekarte.php';
             break;
@@ -93,7 +93,7 @@ switch ($action) {
                     If (isset($value) and $value > 0) {
                         $gerichtid = substr($inputName, 12); //id aus dem inputNamen ziehen
                         $anzahl = $value;
-                        Bestellung::setBestellung(Login::getTischId(), $gerichtid, $anzahl);
+                        Bestellung::setBestellung(Login::getTischId(), $gerichtid, $anzahl);                       
                         Benachrichtigung::addBenachrichtigung("Es wurden " . $anzahl . "x " . Speisen::getGericht($gerichtid)[0] . " bestellt!", "success");
                         Utility::redirect("index.php?action=meals&aktuellkategorieid=" . $aktuellkategorieid);
                     } else {

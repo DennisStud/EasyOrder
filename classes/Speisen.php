@@ -44,5 +44,12 @@ class Speisen {
         $stmt->bindValue(":beschreibung", $beschreibung);
         $stmt->execute();
     }
+    
+    /*löschen eines Gerichtes
+     *  public static function delGericht ($kategorieid, $titel) {
+     *      $stmt = DB::dbh->prepare("DELETE FROM gericht WHERE gericht_id = :gerichtid");
+     *      $stmt->blindvalue(":gerichtid", $Gericht_ID);
+     *      $stmt->execute();
+     */
 
 }

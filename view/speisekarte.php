@@ -8,6 +8,12 @@ if (Benachrichtigung::hasBenachrichtigungen()) {
 require 'templates/sidebar_left.php';
 ?>
 
+<script>
+    function achtungBox(){
+        window.open("index.php?action=overview");
+    }
+</script>
+
 <body style="background-image: url(img/holz.jpg)">
     <div class="container"> 
         <?php $kat = Kategorie::getKategorie($aktuellkategorieid); ?>
@@ -41,7 +47,7 @@ require 'templates/sidebar_left.php';
                         <!--Formular zum Aufgeben der Bestellung-->
                         <form class="form-inline" action="index.php?action=order&aktuellkategorieid=<?php echo $aktuellkategorieid ?>" method="post">
                             <input type="number" class="form-control" id="input_anzahl<?php echo $Speise[0] ?>" name="input_anzahl<?php echo $Speise[0] ?>" placeholder="Anzahl" min="0">
-                            <button type="submit" value="bestellen">bestellen</button>
+                            <button onclick="achtungBox()" type="submit" value="bestellen">bestellen</button>
                         </form>
                         
                     </td>
@@ -49,7 +55,7 @@ require 'templates/sidebar_left.php';
             </tr>
         </tbody>
     </table>
-</div>
+    </div>
 </body>
 <?php
 require 'templates/footblockview.php';

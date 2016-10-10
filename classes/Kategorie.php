@@ -54,4 +54,11 @@ class Kategorie {
         $stmt->execute();
     }
 
+    /*lösche eine Kategorie
+     * public static function delKategorie($kategorie) {
+     *      $stmt = DB::$dbh->prepare("DELETE FROM kategorie WHERE kategorie_id = :kategorieid");
+     *      $stmt->blindvalue(":kategorieid", $aktuellkategorieid);
+     *      $stmt->execute();
+     */
+    
 }
