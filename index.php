@@ -131,6 +131,7 @@ switch ($action) {
                 Utility::redirect("index.php?action=home");
                 break;
             }
+            //Öffnen des Webauftritts der Gaststätte
             include 'view/ueberuns.php';
             break;
         }
@@ -142,7 +143,7 @@ switch ($action) {
                 Utility::redirect("index.php?action=home");
                 break;
             }
-
+            //Öfnnen der Konfigurationsseite
             include 'view/konfig.php';
             break;
         }
@@ -154,7 +155,7 @@ switch ($action) {
                 Utility::redirect("index.php?action=home");
                 break;
             }
-            if (isset($_POST['input_setkategorie'])) {
+    if (isset($_POST['input_setkategorie'])and $_POST['input_setkategorie'] !=="") {
                 $setkategorie = $_POST['input_setkategorie'];
                 Kategorie::setKategorie($setkategorie);
             } else {
@@ -189,7 +190,8 @@ switch ($action) {
                 break;
             }
             //Wenn die Inputfelder nicht leer sind, erstelle ein neues Gericht
-            if (isset($_POST['input_settitel']) and isset($_POST['input_seteinzelpreis']) and $_POST['input_settitel'] !== "" and $_POST['input_seteinzelpreis'] !== "") {
+            if(isset($_POST['dropdown_kategorie'])or $_POST['dropdown_kategorie'] == "" ){
+            if (isset($_POST['input_settitel']) and isset($_POST['input_seteinzelpreis']) and $_POST['input_settitel'] !== "" and $_POST['input_seteinzelpreis'] !== "" ) {
                 $setkategorieid = Kategorie::getKategorieID($_POST['dropdown_kategorie']);
                 $settitel = $_POST['input_settitel'];
                 $seteinzelpreis = $_POST['input_seteinzelpreis'];
@@ -197,6 +199,9 @@ switch ($action) {
                 Speisen::setGericht($setkategorieid, $settitel, $seteinzelpreis, $setbeschreibung);
             } else {
                 Benachrichtigung::addBenachrichtigung("Geben Sie einen Titel und einen Preis für das zu erstellende Gericht an!", "danger");
+            }
+            }  else {
+                Benachrichtigung::addBenachrichtigung("Bitte erstellen Sie zuerst eine Kategorie", "danger");
             }
             include 'view/konfig.php';
             break;
@@ -212,8 +217,9 @@ switch ($action) {
             if (isset($_POST['dropdown_delgericht'])) {
                 $delgericht = Speisen::getGerichtID($_POST['dropdown_delgericht']);
                 Speisen::delGericht($delgericht[0]);
-            } else {
-                Benachrichtigung::addBenachrichtigung("Alle Gerichte wurden gelöscht!", "danger");
+            }  else {
+                
+            Benachrichtigung::addBenachrichtigung("Alle Gerichte wurden gelöscht!", "danger");
             }
             include 'view/konfig.php';
             break;
@@ -226,7 +232,7 @@ switch ($action) {
                 Utility::redirect("index.php?action=home");
                 break;
             }
-            //löschen der Bestellung
+            //löschen der Bestellung getätigten Bestellungen und Logout
             $delbestellung = Login::getTischId();
             Bestellung::delBestellung($delbestellung);
             Login::logout();

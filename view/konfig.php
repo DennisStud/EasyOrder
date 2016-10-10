@@ -43,7 +43,7 @@ require 'templates/sidebar_left.php';
         <!--Formular zum Hinzufügen eines neuen Gerichts-->
         <h4>Fügen Sie eine neues Gericht hinzu!</h4>
         <form action="index.php?action=gericht_erstellen" method="post" id="form_setgericht">
-            <select name="dropdown_kategorie" id="dropdown_setkategorie">
+            <select name="dropdown_kategorie" id="dropdown_kategorie">
                 <?php
                 //Auslesen aller vorhandenen Kategorien
                 $setkategorie = Kategorie::getAllKategorien();
