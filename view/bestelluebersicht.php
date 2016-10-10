@@ -7,7 +7,7 @@ require 'templates/sidebar_left.php';
 <body style="background-image: url(img/holz.jpg)">
     <div class="row">
         <div class="container">
-            <p><h1>Bestellübersicht</h1></p>
+            <p><h1><b>Bestellübersicht</b></h1></p>
 
             <table class="table">
                 <thead>
@@ -26,16 +26,13 @@ require 'templates/sidebar_left.php';
                         foreach ($bestellung as $Bestellung) {
                             ?>
                             <td><?php echo $Bestellung['titel'] ?></td>
-                            <td><?php echo $Bestellung['einzelpreis'] ?></td>
+                            <td><?php echo $Bestellung['einzelpreis'] ?> €</td>
                             <td><?php echo $Bestellung['anzahl'] ?></td>
-
-                            <?php
-                            ?>
-                            <td><?php echo $Gesamtpreis ?></td>
+                            <td><?php echo number_format($Bestellung['einzelpreis'] * $Bestellung['anzahl'], 2) ?> €</td>
                         </tr>
                     <?php } ?>
                     <tr>
-                        <td colspan="2">
+                        <td colspan="4">
                             <a href="index.php?action=meals" class="glyphicon glyphicon-plus" >Weitere Bestellung hinzufügen</a>
 
 
@@ -43,7 +40,7 @@ require 'templates/sidebar_left.php';
                     </tr>
                     <tr>
                         <td colspan="3" >Gesamtsumme:</td>
-                        <td> <?php echo $Gesamtsumme ?></td>
+                        <td> <?php echo number_format($Gesamtsumme, 2) ?> €</td>
                         <td><a href="index.php?action=warten">Bezahlen</a></td>
                     </tr>
 

@@ -12,7 +12,7 @@ require 'templates/sidebar_left.php';
 <body style="background-image: url(img/holz.jpg)">
     <div class="container"> 
         <?php $kat = Kategorie::getKategorie($aktuellkategorieid); ?>
-        <p><h1><?php echo $kat[0]; ?></h1></p>
+        <p><h1><b><?php echo $kat[0]; ?></b></h1></p>
 
     <!--Dies ist die Speisekarte-->
     <table class="table">
@@ -20,7 +20,7 @@ require 'templates/sidebar_left.php';
             <tr> 
                 <th>Gericht</th>
                 <th>Beschreibung</th>
-                <th>Preis</th>
+                <th>Preis in €</th>
                 <th>Anzahl</th>
             </tr>
         </thead>
@@ -34,7 +34,7 @@ require 'templates/sidebar_left.php';
                 <tr class="table-row">
                     <?php for ($y = 1; $y <= 3; $y++) { ?>
                         <td>
-                            <?php echo $Speise [$y] ?>
+                            <?php echo $Speise [$y] ?> 
                         </td>
                     <?php } ?>
 
