@@ -1,11 +1,15 @@
 <!--Seite mit Darstellung der Speisekarte-->
 <?php
 require 'templates/headblockview.php';
+if (Benachrichtigung::hasBenachrichtigungen()) {
+    echo Benachrichtigung::getBenachrichtigung();
+}
+
 require 'templates/sidebar_left.php';
 ?>
 
 <body>
-    <div class="container">
+    <div class="container"> 
         <?php $kat = Kategorie::getKategorie($aktuellkategorieid); ?>
         <p><h1><?php echo $kat[0]; ?></h1></p>
 
@@ -35,10 +39,11 @@ require 'templates/sidebar_left.php';
 
                     <td>
                         <!--Formular zum Aufgeben der Bestellung-->
-                        <form class="form-inline" action="index.php?action=order" method="post">
+                        <form class="form-inline" action="index.php?action=order&aktuellkategorieid=<?php echo $aktuellkategorieid ?>" method="post">
                             <input type="number" class="form-control" id="input_anzahl<?php echo $Speise[0] ?>" name="input_anzahl<?php echo $Speise[0] ?>" placeholder="Anzahl" min="0">
                             <button type="submit" value="bestellen">bestellen</button>
                         </form>
+                        
                     </td>
                 <?php } ?>
             </tr>

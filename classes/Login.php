@@ -21,7 +21,7 @@ class Login {
             return FALSE;
         }
     }
-    
+
     //liefert den eingeloggten Tisch, wenn nicht eingeloggt, dann werfe LoginException
     public static function getTischId() {
         if (self::isLoggedIn() == FALSE) {
@@ -29,7 +29,7 @@ class Login {
         }
         return $_SESSION['login_tischid'];
     }
-    
+
     //führt Logout durch
     public static function logout() {
         $_SESSION['login_auth'] = false;

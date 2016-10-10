@@ -21,19 +21,19 @@ require 'templates/sidebar_left.php';
                 <tbody>
                     <tr class="table-row">
                         <?php
-                        $bestellung = Bestellung::getBestellung(Login::getTischId());
-                        $Gesamtsumme = 0;
+                        
+                        $i=0;
 
                         foreach ($bestellung as $Bestellung) {
 
-                            $Gericht = Speisen::getGericht($Bestellung[0]);
                             ?>
-                            <td><?php echo $Gericht['Titel'] ?></td>
-                            <td><?php echo $Gericht['Einzelpreis'] ?></td>
+                            <td><?php echo $Bestellung['titel'] ?></td>
+                            <td><?php echo $Bestellung['einzelpreis'] ?></td>
                             <td><?php echo $Bestellung['anzahl'] ?></td>
+                        
                             <?php
-                            $Gesamtpreis = $Gericht['Einzelpreis'] * $Bestellung['anzahl'];
-                            $Gesamtsumme += $Gesamtpreis;
+                           
+                            
                             ?>
                             <td><?php echo $Gesamtpreis ?></td>
                         </tr>
@@ -42,7 +42,7 @@ require 'templates/sidebar_left.php';
                     <tr>
                         <td colspan="3" >Gesamtsumme:</td>
                         <td> <?php echo $Gesamtsumme ?></td>
-                        <td><a href="index.php?action=home">Bezahlen</a></td>
+                        <td><a href="index.php?action=warten">Bezahlen</a></td>
                     </tr>
                 </tbody>
             </table>

@@ -18,15 +18,13 @@ class Bestellung {
 
     //Bestellung aus der Datenbank auslesen
     public static function getBestellung($tischID) {
-        $stmt = DB::$dbh->prepare("SELECT gericht_id, anzahl FROM bestellung WHERE tisch_id=:tisch_id Order By gericht_id");
+        $stmt = DB::$dbh->prepare("SELECT gericht.titel, gericht.einzelpreis, bestellung.anzahl FROM bestellung JOIN gericht WHERE bestellung.tisch_id=:tisch_id AND gericht.gericht_id= bestellung.gericht_id");
         $stmt->bindValue(":tisch_id", $tischID);
         $stmt->execute();
 
         $arrayspeisen = array(); //Rückgabearray vorbereiten
-        $i = 0;
         while ($row = $stmt->fetch()) {
-            $arrayspeisen[$i] = $row;
-            $i++;
+            array_push($arrayspeisen, $row);
         }
         return $arrayspeisen;
     }

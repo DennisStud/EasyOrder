@@ -1,7 +1,13 @@
 <!--View zum Verwalten der Speisekarte-->
 <?php
 require 'templates/headblockview.php';
+if (Benachrichtigung::hasBenachrichtigungen()) {
+    echo Benachrichtigung::getBenachrichtigung();
+}
+
 require 'templates/sidebar_left.php';
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -27,8 +33,8 @@ require 'templates/sidebar_left.php';
                 foreach ($kategorie as $kat) {
                     ?>
 
-                    <option><?php echo $kat ?></option>
-<?php } ?>
+                    <option><?php echo $kat[1] ?></option>
+                <?php } ?>
             </select>
 
             <input class="text" name="input_settitel" id="input_settitel" placeholder="Titel">

@@ -1,8 +1,9 @@
 <!--Login-Screen-->
 
 <?php
-if (Benachrichtigung::hasBenachrichtigungen()) 
-    {echo Benachrichtigung::getBenachrichtigung();}
+if (Benachrichtigung::hasBenachrichtigungen()) {
+    echo Benachrichtigung::getBenachrichtigung();
+}
 ?>
 
 <div style="text-align: center">

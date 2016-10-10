@@ -1,4 +1,5 @@
 <?php
+
 //Beginn der Session
 session_start();
 
@@ -52,7 +53,7 @@ switch ($action) {
                 Utility::redirect("index.php?action=home");
                 break;
             }
-            include 'view/startpage.php';
+            include 'view/startseite.php';
             break;
         }
 
@@ -64,6 +65,7 @@ switch ($action) {
                 break;
             }
             //Aufruf der ausgewählten Kategorie
+
             if (isset($_GET['aktuellkategorieid'])) {
                 $aktuellkategorieid = $_GET['aktuellkategorieid'];
             } else {
@@ -73,6 +75,7 @@ switch ($action) {
             break;
         }
 
+
     //Entgegennehmen der Bestellung und Weiterleiten zur Bestellübersicht
     case "order": {
             //Weiterleitung zur Startseite, falls nicht eingeloggt
@@ -80,91 +83,134 @@ switch ($action) {
                 Utility::redirect("index.php?action=home");
                 break;
             }
+            
+            $aktuellkategorieid = $_GET['aktuellkategorieid'];
+
             //Lade Bestellung
             foreach ($_POST as $inputName => $value) { //dazu alle übergebenen Werte nacheinander prüfen
                 if (strpos($inputName, "input_anzahl") !== FALSE) {
-                    $gerichtid = substr($inputName, 12); //id aus dem inputNamen ziehen
-                    $anzahl = $value;
-                    Bestellung::setBestellung(Login::getTischId(), $gerichtid, $anzahl);
+                    If (isset($value) and $value > 0) {
+                        $gerichtid = substr($inputName, 12); //id aus dem inputNamen ziehen
+                        $anzahl = $value;
+                        Bestellung::setBestellung(Login::getTischId(), $gerichtid, $anzahl);
+                        Benachrichtigung::addBenachrichtigung("Es wurden " . $anzahl . "x " . Speisen::getGericht($gerichtid)[0] . " bestellt!", "success");
+                        Utility::redirect("index.php?action=meals&aktuellkategorieid=" . $aktuellkategorieid);
+                    } else {
+                        Benachrichtigung::addBenachrichtigung("Bitte geben Sie eine Anzahl ein!", "Danger");
+                        Utility::redirect("index.php?action=meals&aktuellkategorieid=" . $aktuellkategorieid);
+                    }
                 }
-            }
-            include 'view/bestelluebersicht.php';
-            break;
-        }
-    //Seite mit einer Übersicht über alle getätigten Bestellungen
-    case "overview": {
-            //Weiterleitung zur Startseite, falls nicht eingeloggt
-            if (!Login::isLoggedIn()) {
-                Utility::redirect("index.php?action=home");
+
                 break;
             }
-            include 'view/bestelluebersicht.php';
-            break;
-        }
-
-    //Seite Beschreibung der Gaststätte
-    case "about": {
-            //Weiterleitung zur Startseite, falls nicht eingeloggt
-            if (!Login::isLoggedIn()) {
-                Utility::redirect("index.php?action=home");
-                break;
-            }
-            include 'view/ueberuns.php';
-            break;
-        }
-
-    //Konfigurationsseite zum Verwalten der Speisekarte
-    case "konfig": {
-            //Weiterleitung zur Startseite, falls nicht eingeloggt
-            if (!Login::isLoggedIn()) {
-                Utility::redirect("index.php?action=home");
+    }
+    
+            //Seite mit einer Übersicht über alle getätigten Bestellungen
+            case "overview": {
+                //Weiterleitung zur Startseite, falls nicht eingeloggt
+                if (!Login::isLoggedIn()) {
+                    Utility::redirect("index.php?action=home");
+                    break;
+                }
+                $bestellung = Bestellung::getBestellung(Login::getTischId());
+                $Gesamtsumme = 0;
+                foreach($bestellung as $Bestellung){
+                $Gesamtpreis = $Bestellung['einzelpreis'] * $Bestellung['anzahl'];
+                $Gesamtsumme+= $Gesamtpreis;
+                }
+                
+                include 'view/bestelluebersicht.php';
                 break;
             }
 
-            include 'view/konfig.php';
-            break;
-        }
-
-    //Erstellen einer neuen Kateforie
-    case "kategorie_erstellen": {
-            //Weiterleitung zur Startseite, falls nicht eingeloggt
-            if (!Login::isLoggedIn()) {
-                Utility::redirect("index.php?action=home");
+            //Seite Beschreibung der Gaststätte
+            case "about": {
+                //Weiterleitung zur Startseite, falls nicht eingeloggt
+                if (!Login::isLoggedIn()) {
+                    Utility::redirect("index.php?action=home");
+                    break;
+                }
+                include 'view/ueberuns.php';
                 break;
             }
-            if (!$_GET['input_setkategorie'] == NULL) {
-                $setkategorie = $_POST['input_setkategorie'];
-                Kategorie::setKategorie($setkategorie);
-            }
-        }
-    //Erstellen eines neuen Gerichts
-    case "gericht_erstellen": {
 
+            //Konfigurationsseite zum Verwalten der Speisekarte
+            case "konfig": {
+                //Weiterleitung zur Startseite, falls nicht eingeloggt
+                if (!Login::isLoggedIn()) {
+                    Utility::redirect("index.php?action=home");
+                    break;
+                }
 
-            if (!$_POST['input_settitel'] == NULL && !$_POST['input_seteinzelpreis'] == NULL && !$_POST['input_setbeschreibung'] == NULL) {
-                $setkategorieid = Kategorie::getKategorieID($_POST['dropdown_kategorie']);
-                $settitel = $_POST['input_settitel'];
-                $seteinzelpreis = $_POST['input_seteinzelpreis'];
-                $setbeschreibung = $_POST['input_setbeschreibung'];
-                Speisen::setGericht($setkategorieid, $settitel, $seteinzelpreis, $setbeschreibung);
-            }
-
-            include 'view/konfig.php';
-            break;
-        }
-    //Login-View als Startseite
-    default:
-    case "home": {
-
-            //Weiterleitung auf Spieleübersicht, wenn man bereits eingeloggt ist
-            if (Login::isLoggedIn()) {
-                Utility::redirect("index.php?action=start");
+                include 'view/konfig.php';
                 break;
             }
-            include "view/login.php";
-            break;
+
+            //Erstellen einer neuen Kateforie
+            case "kategorie_erstellen": {
+                //Weiterleitung zur Startseite, falls nicht eingeloggt
+                if (!Login::isLoggedIn()) {
+                    Utility::redirect("index.php?action=home");
+                    break;
+                }
+                if (isset($_GET['input_setkategorie'])) {
+                    $setkategorie = $_POST['input_setkategorie'];
+                    Kategorie::setKategorie($setkategorie);
+                } else {
+                    Benachrichtigung::addBenachrichtigung("Geben Sie eine Kategorie ein!", "Danger");
+                }
+                include 'view/konfig.php';
+                break;
+            }
+            //Erstellen eines neuen Gerichts
+            case "gericht_erstellen": {
+
+                if (!Login::isLoggedIn()) {
+                    Utility::redirect("index.php?action=home");
+                    break;
+                }
+
+                if (isset($_GET['input_settitel']) and isset($_GET['input_seteinzelpreis'])) {
+                    $setkategorieid = Kategorie::getKategorieID($_POST['dropdown_kategorie']);
+                    $settitel = $_POST['input_settitel'];
+                    $seteinzelpreis = $_POST['input_seteinzelpreis'];
+                    $setbeschreibung = $_POST['input_setbeschreibung'];
+                    Speisen::setGericht($setkategorieid, $settitel, $seteinzelpreis, $setbeschreibung);
+                } else {
+                    Benachrichtigung::addBenachrichtigung("Geben Sie einen Titel und einen Preis für das zu erstellende Gericht an!", "danger");
+                }
+                include 'view/konfig.php';
+                break;
+            }
+            
+    case "warten": {
+        
+        if (!Login::isLoggedIn()) {
+                    Utility::redirect("index.php?action=home");
+                    break;
+                }
+                
+                include 'view/warten.php';
+                break;
+        
+        
+        
+        
+    }
+            //Login-View als Startseite
+            default:
+            case "home": {
+
+                //Weiterleitung auf Spieleübersicht, wenn man bereits eingeloggt ist
+                if (Login::isLoggedIn()) {
+                    Utility::redirect("index.php?action=start");
+                    break;
+                }
+                include "view/login.php";
+                break;
+            }
         }
-}
 
 //Ende der Session
-session_write_close();
+        session_write_close();
+    

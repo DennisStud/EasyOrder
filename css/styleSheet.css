@@ -26,8 +26,9 @@ td{
 }
 
 body{
-    background-image: url(img/holz.jpg);
+
     background-color: #ccc;
+    background: url(img/holz.jpg);
     opacity: 0.9;
 
 }
@@ -43,9 +44,8 @@ body{
 
 }
 
-#input_anzahl{
-    max-width: 70px
-
+.img-responsive{
+    max-height: 100px;
+    max-width: 100px;    
 }
-
 

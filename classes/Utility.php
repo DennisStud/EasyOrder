@@ -12,7 +12,7 @@ class Utility {
         header('Location: ' . $url);
         echo "<a href=\"$url\">Weiter</a>";
     }
-    
+
     //liefert die Rolle des Users (Entweder Gast oder Admin) 
     public static function getRolle() {
         if (Login::isLoggedIn() == FALSE) {
@@ -20,5 +20,6 @@ class Utility {
         }
         return $_SESSION['login_rolle'];
     }
+
     
 }
