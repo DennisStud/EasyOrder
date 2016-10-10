@@ -29,12 +29,11 @@ class Bestellung {
         return $arrayspeisen;
     }
     
-    /*Lösche die Bestellungen des Tisches
-    public static function delBestellung($bestellung) {
+    //Lösche die Bestellungen des Tisches
+    public static function delBestellung($tischID) {
         $stmt = DB::$dbh->prepare("DELETE FROM bestellung WHERE tisch_id =:tischid");
-        $stmt->bindvalue(":tischid", $tisch);
+        $stmt->bindvalue(":tischid", $tischID);
         $stmt->execute();
     }
-     */
 
 }

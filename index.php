@@ -219,21 +219,25 @@ switch ($action) {
             break;
         }
 
+    //Weiterleitung wenn Bezahlvorgang eingeleitet wird
     case "warten": {
 
             if (!Login::isLoggedIn()) {
                 Utility::redirect("index.php?action=home");
                 break;
             }
-
+            //löschen der Bestellung
+            $delbestellung = Login::getTischId();
+            Bestellung::delBestellung($delbestellung);
             include 'view/warten.php';
             break;
         }
+        
     //Login-View als Startseite
     default:
     case "home": {
 
-            //Weiterleitung auf Spieleübersicht, wenn man bereits eingeloggt ist
+            //Weiterleitung auf Startseite, wenn man bereits eingeloggt ist
             if (Login::isLoggedIn()) {
                 Utility::redirect("index.php?action=start");
                 break;
