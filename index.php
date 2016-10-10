@@ -229,6 +229,7 @@ switch ($action) {
             //löschen der Bestellung
             $delbestellung = Login::getTischId();
             Bestellung::delBestellung($delbestellung);
+            Login::logout();
             include 'view/warten.php';
             break;
         }
