@@ -21,29 +21,32 @@ require 'templates/sidebar_left.php';
                 <tbody>
                     <tr class="table-row">
                         <?php
-                        
-                        $i=0;
+                        $i = 0;
 
                         foreach ($bestellung as $Bestellung) {
-
                             ?>
                             <td><?php echo $Bestellung['titel'] ?></td>
                             <td><?php echo $Bestellung['einzelpreis'] ?></td>
                             <td><?php echo $Bestellung['anzahl'] ?></td>
-                        
+
                             <?php
-                           
-                            
                             ?>
                             <td><?php echo $Gesamtpreis ?></td>
                         </tr>
                     <?php } ?>
-                    <tr></tr>
+                    <tr>
+                        <td colspan="2">
+                            <a href="index.php?action=meals" class="glyphicon glyphicon-plus" >Weitere Bestellung hinzufügen</a>
+
+
+                        </td>
+                    </tr>
                     <tr>
                         <td colspan="3" >Gesamtsumme:</td>
                         <td> <?php echo $Gesamtsumme ?></td>
                         <td><a href="index.php?action=warten">Bezahlen</a></td>
                     </tr>
+
                 </tbody>
             </table>
         </div>

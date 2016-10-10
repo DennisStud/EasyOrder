@@ -21,5 +21,4 @@ class Utility {
         return $_SESSION['login_rolle'];
     }
 
-    
 }

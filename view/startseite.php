@@ -9,8 +9,10 @@ require 'templates/sidebar_left.php';
     <div class="container">
         <!--Einleitender Begrüßungstext auf der Startseite-->
         <div class="row">
-            <div class="col-md-10"><p class="text-center" ><h1>Willkommen im Gasthaus zur alten Eiche</h1> <br> 
-                    Wir begrüßen Sie herzlich an Tisch <?php echo Login::getTischId() ?> !</p></div>
+            <div class="col-md-12">
+                <textarea name="begruessung" cols="75" rows="5" readonly style="font-size: 24px">Willkommen im Gasthaus zur alten Eiche 
+                Wir begrüßen Sie herzlich an Tisch <?php echo Login::getTischId() ?> !</textarea>
+            </div>
         </div>
 
         <!--Buttons und Images zur Navigation-->
@@ -31,7 +33,7 @@ require 'templates/sidebar_left.php';
                     </div>
                 </form>
             </div>
-          </div>
+        </div>
     </div>
 </body>
 

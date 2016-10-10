@@ -24,10 +24,21 @@ class Speisen {
     }
 
     //Laden eines einzelnen Gerichts
-    public static function getGericht($Gericht_ID) {
+    public static function getGericht($Titel) {
 
-        $stmt = DB::$dbh->prepare("SELECT Titel, Einzelpreis FROM gericht WHERE gericht_id =:gerichtid");
-        $stmt->bindValue(":gerichtid", $Gericht_ID);
+        $stmt = DB::$dbh->prepare("SELECT Titel, Einzelpreis FROM gericht WHERE gericht_id =:titel");
+        $stmt->bindValue(":titel", $Titel);
+        $stmt->execute();
+        $gerichtid = $stmt->fetch();
+
+
+        return $gerichtid;
+    }
+
+    public static function getGerichtID($GerichtID) {
+
+        $stmt = DB::$dbh->prepare("SELECT gericht_id FROM gericht WHERE titel =:gerichtid");
+        $stmt->bindValue(":gerichtid", $GerichtID);
         $stmt->execute();
 
         $arraygericht = $stmt->fetch();
@@ -44,12 +55,19 @@ class Speisen {
         $stmt->bindValue(":beschreibung", $beschreibung);
         $stmt->execute();
     }
-    
-    /*löschen eines Gerichtes
-     *  public static function delGericht ($kategorieid, $titel) {
-     *      $stmt = DB::dbh->prepare("DELETE FROM gericht WHERE gericht_id = :gerichtid");
-     *      $stmt->blindvalue(":gerichtid", $Gericht_ID);
-     *      $stmt->execute();
-     */
+
+    //Löschen eines Gerichtes
+    public static function delGericht($Gericht_ID) {
+        $stmt = DB::$dbh->prepare("DELETE FROM gericht WHERE gericht_id = :gerichtid");
+        $stmt->bindvalue(":gerichtid", $Gericht_ID);
+        $stmt->execute();
+    }
+
+    //Löschen eines Gerichtes
+    public static function delGerichtbykat($kategorieID) {
+        $stmt = DB::$dbh->prepare("DELETE FROM gericht WHERE kategorie_id = :kategorieID");
+        $stmt->bindvalue(":kategorieid", $kategorieID);
+        $stmt->execute();
+    }
 
 }

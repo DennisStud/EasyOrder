@@ -69,8 +69,8 @@ switch ($action) {
             if (isset($_GET['aktuellkategorieid'])) {
                 $aktuellkategorieid = $_GET['aktuellkategorieid'];
             } else {
-                    $tmp=  Kategorie::getAllKategorien();
-                    $aktuellkategorieid = $tmp[0][0];
+                $tmp = Kategorie::getAllKategorien();
+                $aktuellkategorieid = $tmp[0][0];
             }
             include 'view/speisekarte.php';
             break;
@@ -84,7 +84,7 @@ switch ($action) {
                 Utility::redirect("index.php?action=home");
                 break;
             }
-            
+
             $aktuellkategorieid = $_GET['aktuellkategorieid'];
 
             //Lade Bestellung
@@ -93,7 +93,7 @@ switch ($action) {
                     If (isset($value) and $value > 0) {
                         $gerichtid = substr($inputName, 12); //id aus dem inputNamen ziehen
                         $anzahl = $value;
-                        Bestellung::setBestellung(Login::getTischId(), $gerichtid, $anzahl);                       
+                        Bestellung::setBestellung(Login::getTischId(), $gerichtid, $anzahl);
                         Benachrichtigung::addBenachrichtigung("Es wurden " . $anzahl . "x " . Speisen::getGericht($gerichtid)[0] . " bestellt!", "success");
                         Utility::redirect("index.php?action=meals&aktuellkategorieid=" . $aktuellkategorieid);
                     } else {
@@ -104,123 +104,145 @@ switch ($action) {
 
                 break;
             }
-    }
-    
-            //Seite mit einer Übersicht über alle getätigten Bestellungen
-            case "overview": {
-                //Weiterleitung zur Startseite, falls nicht eingeloggt
-                if (!Login::isLoggedIn()) {
-                    Utility::redirect("index.php?action=home");
-                    break;
-                }
-                $bestellung = Bestellung::getBestellung(Login::getTischId());
-                $Gesamtsumme = 0;
-                foreach($bestellung as $Bestellung){
+        }
+
+    //Seite mit einer Übersicht über alle getätigten Bestellungen
+    case "overview": {
+            //Weiterleitung zur Startseite, falls nicht eingeloggt
+            if (!Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=home");
+                break;
+            }
+            $bestellung = Bestellung::getBestellung(Login::getTischId());
+            $Gesamtsumme = 0;
+            foreach ($bestellung as $Bestellung) {
                 $Gesamtpreis = $Bestellung['einzelpreis'] * $Bestellung['anzahl'];
                 $Gesamtsumme+= $Gesamtpreis;
-                }
-                
-                include 'view/bestelluebersicht.php';
-                break;
             }
 
-            //Seite Beschreibung der Gaststätte
-            case "about": {
-                //Weiterleitung zur Startseite, falls nicht eingeloggt
-                if (!Login::isLoggedIn()) {
-                    Utility::redirect("index.php?action=home");
-                    break;
-                }
-                include 'view/ueberuns.php';
-                break;
-            }
-
-            //Konfigurationsseite zum Verwalten der Speisekarte
-            case "konfig": {
-                //Weiterleitung zur Startseite, falls nicht eingeloggt
-                if (!Login::isLoggedIn()) {
-                    Utility::redirect("index.php?action=home");
-                    break;
-                }
-
-                include 'view/konfig.php';
-                break;
-            }
-
-            //Erstellen einer neuen Kategorie
-            case "kategorie_erstellen": {
-                //Weiterleitung zur Startseite, falls nicht eingeloggt
-                if (!Login::isLoggedIn()) {
-                    Utility::redirect("index.php?action=home");
-                    break;
-                }
-                if (isset($_POST['input_setkategorie'])) {
-                    $setkategorie = $_POST['input_setkategorie'];
-                    Kategorie::setKategorie($setkategorie);
-                } else {
-                    Benachrichtigung::addBenachrichtigung("Geben Sie eine Kategorie ein!", "Danger");
-                }
-                include 'view/konfig.php';
-                break;
-            }
-            //Erstellen eines neuen Gerichts
-            case "gericht_erstellen": {
-
-                if (!Login::isLoggedIn()) {
-                    Utility::redirect("index.php?action=home");
-                    break;
-                }
-
-                if (isset($_POST['input_settitel']) and isset($_POST['input_seteinzelpreis'])) {
-                    $setkategorieid = Kategorie::getKategorieID($_POST['dropdown_kategorie']);
-                    $settitel = $_POST['input_settitel'];
-                    $seteinzelpreis = $_POST['input_seteinzelpreis'];
-                    $setbeschreibung = $_POST['input_setbeschreibung'];
-                    Speisen::setGericht($setkategorieid, $settitel, $seteinzelpreis, $setbeschreibung);
-                } else {
-                    Benachrichtigung::addBenachrichtigung("Geben Sie einen Titel und einen Preis für das zu erstellende Gericht an!", "danger");
-                }
-                include 'view/konfig.php';
-                break;
-            }
-            
-    case "warten": {
-        
-        if (!Login::isLoggedIn()) {
-                    Utility::redirect("index.php?action=home");
-                    break;
-                }
-                
-                include 'view/warten.php';
-                break;
-        
-        
-        
-        
-    }
-            //Login-View als Startseite
-            default:
-            case "home": {
-
-                //Weiterleitung auf Spieleübersicht, wenn man bereits eingeloggt ist
-                if (Login::isLoggedIn()) {
-                    Utility::redirect("index.php?action=start");
-                    break;
-                }
-                include "view/login.php";
-                break;
-            }
+            include 'view/bestelluebersicht.php';
+            break;
         }
-        
-    /*case "delete": {
-        if (!Login::isLoggedIn()) {
-                    Utility::redirect("index.php?action=home");
-                    break;
-                }
-     * $setkategorieid = Kategorie::getKategorieID($_POST['dropdown_kategorie']);
-     * 
 
-    */
+    //Seite Beschreibung der Gaststätte
+    case "about": {
+            //Weiterleitung zur Startseite, falls nicht eingeloggt
+            if (!Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=home");
+                break;
+            }
+            include 'view/ueberuns.php';
+            break;
+        }
+
+    //Konfigurationsseite zum Verwalten der Speisekarteneinträge
+    case "konfig": {
+            //Weiterleitung zur Startseite, falls nicht eingeloggt
+            if (!Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=home");
+                break;
+            }
+
+            include 'view/konfig.php';
+            break;
+        }
+
+    //Erstellen einer neuen Kategorie
+    case "kategorie_erstellen": {
+            //Weiterleitung zur Startseite, falls nicht eingeloggt
+            if (!Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=home");
+                break;
+            }
+            if (isset($_POST['input_setkategorie'])) {
+                $setkategorie = $_POST['input_setkategorie'];
+                Kategorie::setKategorie($setkategorie);
+            } else {
+                Benachrichtigung::addBenachrichtigung("Geben Sie eine Kategorie ein!", "Danger");
+            }
+            include 'view/konfig.php';
+            break;
+        }
+
+    case "kategorie_löschen": {
+            //Weiterleitung zur Startseite, falls nicht eingeloggt
+            if (!Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=home");
+                break;
+            }
+            //Lösche die über das Dropdown-Feld ausgewählte Kategorie und alle zu dieser Kategorie gehörenden Gerichte
+            if (isset($_POST['dropdown_delkategorie'])) {
+                $delkategorieid = Kategorie::getKategorieID($_POST['dropdown_delkategorie']);
+                Kategorie::delKategorie($delkategorieid[0]);
+                Speisen::delGerichtbyKat($delkategorieid[0]);
+            } else {
+                Benachrichtigung::addBenachrichtigung("Alle Kategorien wurden gelöscht!", "Danger");
+            }
+            include 'view/konfig.php';
+            break;
+        }
+    //Erstellen eines neuen Gerichts
+    case "gericht_erstellen": {
+
+            if (!Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=home");
+                break;
+            }
+            //Wenn die Inputfelder nicht leer sind, erstelle ein neues Gericht
+            if (isset($_POST['input_settitel']) and isset($_POST['input_seteinzelpreis']) and $_POST['input_settitel'] !== "" and $_POST['input_seteinzelpreis'] !== "") {
+                $setkategorieid = Kategorie::getKategorieID($_POST['dropdown_kategorie']);
+                $settitel = $_POST['input_settitel'];
+                $seteinzelpreis = $_POST['input_seteinzelpreis'];
+                $setbeschreibung = $_POST['input_setbeschreibung'];
+                Speisen::setGericht($setkategorieid, $settitel, $seteinzelpreis, $setbeschreibung);
+            } else {
+                Benachrichtigung::addBenachrichtigung("Geben Sie einen Titel und einen Preis für das zu erstellende Gericht an!", "danger");
+            }
+            include 'view/konfig.php';
+            break;
+        }
+    //Löschen eines Gerichts  
+    case "gericht_löschen": {
+
+            if (!Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=home");
+                break;
+            }
+            //Lösche das im Dropdown-Feld ausgewählte Gericht
+            if (isset($_POST['dropdown_delgericht'])) {
+                $delgericht = Speisen::getGerichtID($_POST['dropdown_delgericht']);
+                Speisen::delGericht($delgericht[0]);
+            } else {
+                Benachrichtigung::addBenachrichtigung("Alle Gerichte wurden gelöscht!", "danger");
+            }
+            include 'view/konfig.php';
+            break;
+        }
+
+    case "warten": {
+
+            if (!Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=home");
+                break;
+            }
+
+            include 'view/warten.php';
+            break;
+        }
+    //Login-View als Startseite
+    default:
+    case "home": {
+
+            //Weiterleitung auf Spieleübersicht, wenn man bereits eingeloggt ist
+            if (Login::isLoggedIn()) {
+                Utility::redirect("index.php?action=start");
+                break;
+            }
+            include "view/login.php";
+            break;
+        }
+}
+
+
 //Ende der Session
-        session_write_close();
-    
+session_write_close();
