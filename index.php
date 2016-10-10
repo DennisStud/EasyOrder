@@ -69,7 +69,8 @@ switch ($action) {
             if (isset($_GET['aktuellkategorieid'])) {
                 $aktuellkategorieid = $_GET['aktuellkategorieid'];
             } else {
-                $aktuellkategorieid = '1';
+                    $tmp=  Kategorie::getAllKategorien();
+                    $aktuellkategorieid = var_export($tmp[0]);
             }
             include 'view/speisekarte.php';
             break;
@@ -210,7 +211,16 @@ switch ($action) {
                 break;
             }
         }
+        
+    /*case "delete": {
+        if (!Login::isLoggedIn()) {
+                    Utility::redirect("index.php?action=home");
+                    break;
+                }
+     * $setkategorieid = Kategorie::getKategorieID($_POST['dropdown_kategorie']);
+     * 
 
+    */
 //Ende der Session
         session_write_close();
     
